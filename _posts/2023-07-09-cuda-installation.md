@@ -1,6 +1,6 @@
 ---
 title: CUDA Installation - Ubuntu 22.04 
-date: 2023-07-09 12:00:00 -500
+date: 2023-07-09 6:00:00 -500
 categories: [hardware, gpu, ubuntu]
 tags: [gpu, cuda, linux, ubuntu, drivers]
 ---
@@ -12,7 +12,7 @@ tags: [gpu, cuda, linux, ubuntu, drivers]
 
 ![CUDA Components from NVidia](https://docs.nvidia.com/deploy/cuda-compatibility/graphics/CUDA-components.png)
 
-
+Above picture is from NVidia's page [here](https://docs.nvidia.com/deploy/cuda-compatibility/)
 
 ### CUDA Installation 
 

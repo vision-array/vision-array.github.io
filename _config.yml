@@ -76,7 +76,7 @@ theme_mode: # [light|dark]
 img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: /assets/img/ms-icon-310x310.png
+avatar: https://raw.githubusercontent.com/vision-array/vision-array.github.io/main/assets/img/favicons/ms-icon-310x310.png
 
 # boolean type, the global switch for TOC in posts.
 toc: true
