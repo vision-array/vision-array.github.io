@@ -48,7 +48,7 @@ $ uname -r
 > Once on the page, you might need to create an NVidia Developer Account to download the toolkit
 
 You should see something similar to this on the Downloads page with the CUDA Toolkit 12.2 version.
-![CUDA Toolkit Download Website](assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-website.png)
+![CUDA Toolkit Download Website](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-website.png)
 
 > Lets install CUDA 11.8 as it is the latest version that is supported by the majority the current ML/DL training and inference framework versions like tensorflow, pytorch, tensorrt etc. 
 
@@ -58,7 +58,7 @@ After scrolling down, you should see an option:
 Once on the new page, select the [`CUDA Toolkit 11.8.0 (October 2022), Versioned Online Documentation`](https://developer.nvidia.com/cuda-11-8-0-download-archive)
 
 Select all the fields as required for the system 
-![CUDA-System Fields ](assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-fields.png)
+![CUDA-System Fields ](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-fields.png)
 
  > To find out the system architecture in ubuntu, use the command below in a terminal 
 
