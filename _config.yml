@@ -92,10 +92,10 @@ comments:
     issue_term: # < url | pathname | title | ...>
   # Giscus options › https://giscus.app
   giscus: 
-    repo: vision-array/vision-array-discussions               # <gh-username>/<repo>
-    repo_id: R_kgDOJ5hB9Q
+    repo: vision-array/vision-array.github.io                      #vision-array/vision-array-discussions               # <gh-username>/<repo>
+    repo_id: R_kgDOJ5dDGw #R_kgDOJ5hB9Q
     category: General
-    category_id: DIC_kwDOJ5hB9c4CXxcJ
+    category_id: DIC_kwDOJ5dDG84CXxb9 #DIC_kwDOJ5hB9c4CXxcJ
     mapping:  # optional, default to 'pathname'
     input_position:  # optional, default to 'bottom'
     lang:  # optional, default to the value of `site.lang`
