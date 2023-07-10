@@ -63,7 +63,7 @@ Select all the fields as required for the system
  > To find out the system architecture in ubuntu, use the command below in a terminal 
 
 ```bash
-$ uname -r
+$ uname -m
 ```
 Follow all the commands 
 ```bash 
