@@ -31,6 +31,9 @@ url: "https://vision-array.github.io"
 github:
   username: raghavduddala # change to your github username
 
+linkedin:
+  username: raghav-duddala
+
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
@@ -41,6 +44,7 @@ social:
     - https://github.com/raghavduddala # change to your github homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
+    - https://www.linkedin.com/in/raghav-duddala
 
 google_site_verification: # fill in to your verification string
 
