@@ -6,8 +6,8 @@ order: 1
 
 
 Welcome to Vision-Array (pronounced - Visionary)! 
-I'm [`Raghav Duddala`](https://www.linkedin.com/in/raghav-duddala/), computer vision and AI enthusiast. I am currently working as a Robotics Perception Engineer at Fresh Consulting.
-I aim to share my knowledge, insights, discoveries and occasionally material related to my projects in the fields of Computer Vision, Machine Learning and Deep Learning through vision-array.
+
+Hi! I'm [`Raghav Duddala`](https://www.linkedin.com/in/raghav-duddala/), computer vision and AI enthusiast. I am currently working as a Robotics Perception Engineer at Fresh Consulting.I aim to share my knowledge, insights, discoveries and occasionally material related to my projects in the fields of Computer Vision, Machine Learning and Deep Learning through vision-array.
 
 ![avatar](https://avatars.githubusercontent.com/u/12818429?v=4)
 
