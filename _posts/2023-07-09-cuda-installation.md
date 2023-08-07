@@ -123,10 +123,9 @@ Once the driver is installed, we can check if it was installed using the command
 nvidia-smi
 ```
 
-Now that we have installed the NVidia Driver, let's install the cuda runtime through the runfile. Installing it this way provides us an option to only install the 
-cuda shared object binary and not the NVIDIA driver again that is associated with the Toolkit. Again, visit the [`Archive of Previous CUDA Releases`](https://developer.nvidia.com/cuda-toolkit-archive) and select the version of cuda toolkit/runtime you want to install. 
-Select all the options related to the Architecture, Distribution and version as applicable and for the installer type select the option `runtime(local)`
-which should provide the two terminal commands to download the runfile and to install the runtime through this file
+Now that we have installed the NVidia Driver, let's install the cuda runtime through the runfile. Installing it this way provides us an option to only install the cuda shared object binary and not the NVIDIA driver again that is associated with the Toolkit.
+Again, visit the [`Archive of Previous CUDA Releases`](https://developer.nvidia.com/cuda-toolkit-archive) and select the version of cuda toolkit/runtime you want to install. Select all the options related to the Architecture, Distribution and version as applicable and for the installer type select the option `runtime(local)`
+which should provide the two terminal commands to download the runfile and to install the runtime through this file.
 
 ![Runfile webpage nvidia](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-runfile-webpage.png)
 
