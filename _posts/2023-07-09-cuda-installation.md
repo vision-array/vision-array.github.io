@@ -123,6 +123,7 @@ cuda shared object binary and not the NVIDIA driver again that is associated wit
 Select all the options related to the Architecture, Distribution and version as applicable and for the installer type select the option `runtime(local)`
 which should provide the two terminal commands to download the runfile and to install the runtime through this file
 ![runfile webpage nvidia](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-runfile-webpage.png)
+
 Once you execute the second command, three dialogue boxes appear in order.
 Click on continue to proceed from the first box.
 ![runfile box 1](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-runfile-img1.png)
