@@ -26,21 +26,25 @@ I am planning to write a more detailed summary as to what each of the components
 ```bash
 $ lspci | grep -i nvidia
 ```
+
 ### Verfiying the linux version support 
 
 ```bash
 $ uname -m && cat /etc/*release
 ```
+
 ### Verfiying gcc for CUDA
 
 ```bash
 $ gcc --version
 ```
+
 ### Verifying the System Kernel 
 
 ```bash
 $ uname -r
 ```
+
 ### CUDA Installation from NVIDIA Developer 
 
  We will be using the Network repo installation by downaloading the toolkit from the Developer Link: https://developer.nvidia.com/cuda-downloads
@@ -65,7 +69,9 @@ Select all the fields as required for the system
 ```bash
 $ uname -m
 ```
+
 Follow all the commands 
+
 ```bash 
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
 sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
@@ -74,6 +80,7 @@ sudo dpkg -i cuda-repo-ubuntu2204-11-8-local_11.8.0-520.61.05-1_amd64.deb
 sudo cp /var/cuda-repo-ubuntu2204-11-8-local/cuda-*-keyring.gpg /usr/share/keyrings/
 sudo apt-get update
 ```
+
 The last command has to be modified to ensure that the `apt-get` package manager installs the correct version i,e cuda 11.8.
 
 ```bash 
@@ -96,6 +103,7 @@ sudo apt-get remove --purge "*cuda*"
 sudo apt-get autoremove 
 sudo apt-get autoclean 
 ```
+
 And, it has been observed as a best practice to update to the latest ubuntu kernel headers or reinstall the exisitng latest version so not to miss any patches for these issues. 
 
 ```bash
@@ -147,6 +155,7 @@ We can check if cuda is properly installed on the system using :
 ```bash 
 nvcc --version
 ```
+
 which should result in something as follows: 
 
 ![nvcc command image](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-nvcc.png)
