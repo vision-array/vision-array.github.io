@@ -108,7 +108,7 @@ Now, as mentioned above about installing a newer version of the nvidia drivers, 
 apt search nvidia-driver
 ```
 And then, a series of available drivers should appear something like as shown below
-![available driver versions](assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-drivers-linux.png)
+![available driver versions](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-drivers-linux.png)
 
 Select the appropriate version for the cuda toolkit and the ubuntu kernel as mentioned above,(for example, I chose to install the driver version 525)
 ```bash 
