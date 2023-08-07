@@ -108,37 +108,48 @@ Now, as mentioned above about installing a newer version of the nvidia drivers, 
 apt search nvidia-driver
 ```
 And then, a series of available drivers should appear something like as shown below
+
 ![available driver versions](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-drivers-linux.png)
 
 Select the appropriate version for the cuda toolkit and the ubuntu kernel as mentioned above,(for example, I chose to install the driver version 525)
+
 ```bash 
 sudo apt install nvidia-driver-525
 ```
+
 Once the driver is installed, we can check if it was installed using the command:
+
 ```bash 
 nvidia-smi
 ```
+
 Now that we have installed the NVidia Driver, let's install the cuda runtime through the runfile. Installing it this way provides us an option to only install the 
 cuda shared object binary and not the NVIDIA driver again that is associated with the Toolkit. Again, visit the [`Archive of Previous CUDA Releases`](https://developer.nvidia.com/cuda-toolkit-archive) and select the version of cuda toolkit/runtime you want to install. 
 Select all the options related to the Architecture, Distribution and version as applicable and for the installer type select the option `runtime(local)`
 which should provide the two terminal commands to download the runfile and to install the runtime through this file
-![runfile webpage nvidia](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-runfile-webpage.png)
+
+![Runfile webpage nvidia](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-runfile-webpage.png)
 
 Once you execute the second command, three dialogue boxes appear in order.
 Click on continue to proceed from the first box.
-![runfile box 1](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-runfile-img1.png)
+
+![Runfile box 1](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-runfile-img1.png)
 
 For the second box, accept the End User License Agreement.
-![runfile box 2](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-runfile-img2.png)
+
+![Runfile box 2](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-runfile-img2.png)
 
 In the final dialogue box, you get the options to choose what to install. Uncheck/De-select the Driver as we already installed it through the `apt` package manager and installing the driver that is accompanied with the runtime leads to having two drivers on the system - which again leads to issues.
-![runfile box 3](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-runfile-img3.png)
+
+![Runfile box 3](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-runfile-img3.png)
 
 We can check if cuda is properly installed on the system using : 
+
 ```bash 
 nvcc --version
 ```
 which should result in something as follows: 
+
 ![nvcc command image](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-nvcc.png)
 
 Reference: [`All about the NVIDIA Driver Installation`](https://actruce.com/en/all-about-the-nvidia-driver-installation/)
