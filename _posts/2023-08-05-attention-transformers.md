@@ -1,7 +1,7 @@
 ---
 title: Attention & Transformers
-date: 2023-12-21 6:00:00 -500
-categories: [attention, transformers, Deep Learning]
+date: 2023-12-20 6:00:00 -500
+categories: [attention, transformers, AI, Deep Learning]
 tags: []
 ---
 
