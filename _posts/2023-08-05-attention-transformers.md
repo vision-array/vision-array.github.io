@@ -50,9 +50,9 @@ This posts address the premise of attention starting from sequence to sequence R
   - Attention score =>  $$ a_{i} = Softmax(e_{i}) $$ for all $$ i....N_{X} $$ of Dimension: $$ N_{X} $$
   - The output vector is calculated as the weighted sum of attention scores and the inputs $$ Sigma(a_{i},X_{i}) $$ (or) a dot product between the similar to the $$ Sigma(a_{i}, h_{i}) $$ from the Seq-to-Seq $$ c_t = Sigma_{i}(a_{ti}, h_{i}) $$
   - One way to get the Dimensionality correct with some dot products instead of a $$ f_{att} $$ with an MLP is to use the Input Vectors $$ (X: (N_{X}*D_{X})) $$ to $$ (N_{X}, D_{q}) $$, then: we can have a dot product between the Single Query Vector and the Input Vectors as $$ e_{i} = (q.X_{i}) $$ where $$ e = (D_{q}.{(N_{X}*D_{q})}^T) => (D_{q}.(D_{q}*N_{X})) = N_{X} $$
-  > Note: Dot Product of two vectors is given by: $$ A.B = mod(A)mod(B).Cos(theta) $$, where mod(A), mod(B) are the vector 2-norms of the two vectors whose value depends on the dimensions of the two vectors, Often in the case of the deep learning context - the query vector and the input vector are long - meaning high dimensional which, so we apply a "scaled-dot-product" where the dot product between the Query vector and the input vector is divided by the $$ Sqrt(D_{q}) $$ since vector norm of $$ |q| = q.sqrt(D_{q}) $$
+  - Note: Dot Product of two vectors is given by: $$ A.B = mod(A)mod(B).Cos(theta) $$, where mod(A), mod(B) are the vector 2-norms of the two vectors whose value depends on the dimensions of the two vectors, Often in the case of the deep learning context - the query vector and the input vector are long - meaning high dimensional which, so we apply a "scaled-dot-product" where the dot product between the Query vector and the input vector is divided by the $$ Sqrt(D_{q}) $$ since vector norm of $$ |q| = q.sqrt(D_{q}) $$
   - So, the Output vector is still given by the dot product between the attention weight vector of $$ e E N_{X} $$ and the Input Vector $$ X E (N_{X},D_{X}) $$
-  > Note: Inorder to get the output vector dimension match with the dimension of the query vector - Select the input vector with the Same Dimensions as $$ (N_{X}, D_{q}) $$
+  - Note: Inorder to get the output vector dimension match with the dimension of the query vector - Select the input vector with the Same Dimensions as $$ (N_{X}, D_{q}) $$
 ![Generalized Attention Layer](/assets/img/08-05-attention-transformers/attention-layer.png)
 - Multiple Query Vector Case: 
   - Considerations/Assumptions: 
@@ -84,7 +84,7 @@ This posts address the premise of attention starting from sequence to sequence R
   - $$ W_{Q} $$ Query Weights matrix is given by - Dimension $$ (D_{X}*D_{Q}) $$
   - The Query vector is given by $$ Q: X.W_{Q} = (N_{X}*D_{X})*(D_{X}*D_{Q}) = N_{X}*D_{Q} $$
   - The rest of the operations on calculating the alignment scores, calculating the attention weights and the output vector is similar to that mentioned above (similar to attention layer) giving the final output vector as $$ Y = N_{X}*D_{v} $$ except that $$ N_{X} == N_{Q} $$
-> Self-Attention is permutation invariant - i.e the overall output doesnot change except that the output vectors will also be permuted. 
+- Note: Self-Attention is permutation invariant - i.e the overall output doesnot change except that the output vectors will also be permuted.
 ![Permutation Invariance in Self-Attention](/assets/img/08-05-attention-transformers/permutation-invariant.png)
   - In-order to make the layer position-aware(useful for any time-series data prediction), concatenation of the Positional Encoding done to the input vector.
   - The positional encoding could be either a fixed function, a learnable function with a lookup table.
@@ -107,8 +107,9 @@ This posts address the premise of attention starting from sequence to sequence R
   - Layer Normalization - and finally the output vector 
 > Self-Attention Layer is the only layer where the interaction between the vectors happen
 > The Layer Normalization and the MLP is applied on each input/query Vector indepdent of each other
-> So, 1. the clear advantage is that this is really good for long sequences and for each self-attention layer - the output actually sees all the input vectors  
-and 2. It is highly parallelizable.
+- So: 
+  - The clear advantage is that this is really good for long sequences and for each self-attention layer - the output actually sees all the input vectors and
+  - It is highly parallelizable.
 ![Transformer Block](/assets/img/08-05-attention-transformers/transformer-block.png)
 
 
