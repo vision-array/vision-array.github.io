@@ -31,7 +31,7 @@ This posts address the premise of attention starting from sequence to sequence R
  - softmax is applied over the attention scores to turn them into probabilities - easier for gradient based optimization and avoiding any singularities  - $$ a_{ti} = Softmax(e_{ti}) $$ 
  - The decoder hidden vector at each time step can then be formulated in the following way : $$ S_t = Gu(S_{t-1}, y_{t-1}, ct) $$ where - $$ c_t = Sigma_i(a_{ti}, h_i) $$
     - Implying that the current context vector for the decoder sequence takes in the combined "weighted" summation of the hidden vectors with (the "weights" being the attention weights)
-    ![Context Vector for each instance of Output Vector](/assets/img/08-05-attention-transformers/context-vector.png)
+![Context Vector for each instance of Output Vector](/assets/img/08-05-attention-transformers/context-vector.png)
  - So, this methodology helps focus on different parts of the input sequence/encoder hidden vector for each step of the output/decoder hidden vector through the context vector
  - This also implies that the decoder doesn't necessarily consider the encoder hidden vector sequence to be ordered - It just works fine with an unordered sequence too. 
  - We can use this mechanism for Image Captioning - considering that:
@@ -53,7 +53,7 @@ This posts address the premise of attention starting from sequence to sequence R
   > Note: Dot Product of two vectors is given by: $$ A.B = mod(A)mod(B).Cos(theta) $$, where mod(A), mod(B) are the vector 2-norms of the two vectors whose value depends on the dimensions of the two vectors, Often in the case of the deep learning context - the query vector and the input vector are long - meaning high dimensional which, so we apply a "scaled-dot-product" where the dot product between the Query vector and the input vector is divided by the $$ Sqrt(D_{q}) $$ since vector norm of $$ |q| = q.sqrt(D_{q}) $$
   - So, the Output vector is still given by the dot product between the attention weight vector of $$ e E N_{X} $$ and the Input Vector $$ X E (N_{X},D_{X}) $$
   > Note: Inorder to get the output vector dimension match with the dimension of the query vector - Select the input vector with the Same Dimensions as $$ (N_{X}, D_{q}) $$
-  ![Generalized Attention Layer](/assets/img/08-05-attention-transformers/attention-layer.png)
+![Generalized Attention Layer](/assets/img/08-05-attention-transformers/attention-layer.png)
 - Multiple Query Vector Case: 
   - Considerations/Assumptions: 
     - Query Matrix of Dimension $$ Q: (N_{Q}*D_{Q}) $$  - (Analogous to multiple $$ N_{q} $$ instances/multiple steps of a RNN decoder with each decoder hidden vector of dimension $$ D_{Q} $$ )
@@ -85,12 +85,12 @@ This posts address the premise of attention starting from sequence to sequence R
   - The Query vector is given by $$ Q: X.W_{Q} = (N_{X}*D_{X})*(D_{X}*D_{Q}) = N_{X}*D_{Q} $$
   - The rest of the operations on calculating the alignment scores, calculating the attention weights and the output vector is similar to that mentioned above (similar to attention layer) giving the final output vector as $$ Y = N_{X}*D_{v} $$ except that $$ N_{X} == N_{Q} $$
 > Self-Attention is permutation invariant - i.e the overall output doesnot change except that the output vectors will also be permuted. 
-  ![Permutation Invariance in Self-Attention](/assets/img/08-05-attention-transformers/permutation-invariant.png)
+![Permutation Invariance in Self-Attention](/assets/img/08-05-attention-transformers/permutation-invariant.png)
   - In-order to make the layer position-aware(useful for any time-series data prediction), concatenation of the Positional Encoding done to the input vector.
   - The positional encoding could be either a fixed function, a learnable function with a lookup table.
-    ![Positional Encoding of the Input Vectors](/assets/img/08-05-attention-transformers/positional-encoding.png)
+![Positional Encoding of the Input Vectors](/assets/img/08-05-attention-transformers/positional-encoding.png)
 - Masked Self-Attention is used when we don't want the vectors to look ahead in the sequence. (Used in language modeling - predicting next word)
-  ![Masked Self Attention](/assets/img/08-05-attention-transformers/masked-self-attention.png)
+![Masked Self Attention](/assets/img/08-05-attention-transformers/masked-self-attention.png)
 - Mulitple-heads can be spinned up in parallel (parallelization for a faster computation) where each handles only some part of the query vector 
   - Number of Heads and the dimension of the Query Vector become the hyperparameters of the Model at each layer that change the learning ability of the model.
   - (in the Attention all you need paper)  $$ D_{Q} = 512 , Num_{Heads} = 8 $$ giving each split vector of Dimension $$ D_{Q}/Num_Heads = 64 $$
@@ -108,8 +108,14 @@ This posts address the premise of attention starting from sequence to sequence R
 > Self-Attention Layer is the only layer where the interaction between the vectors happen
 > The Layer Normalization and the MLP is applied on each input/query Vector indepdent of each other
 > So, 1. the clear advantage is that this is really good for long sequences and for each self-attention layer - the output actually sees all the input vectors  
-and 2. It is highly parallelizable. 
+and 2. It is highly parallelizable.
 ![Transformer Block](/assets/img/08-05-attention-transformers/transformer-block.png)
+
+
+<!-- ### From the UVA Tutorial 
+ - Proper definitions for Tokens, Sequence Length, Dimensionality of the input (Embedded Dimension) => Sequence Length ! = Embdedded Dimension
+ - Head Dimensions for each Q, K , V is (Embdedded Dimension//num_heads) = 512/8 = 64  -->
+
 
 
 ### Reference: 
