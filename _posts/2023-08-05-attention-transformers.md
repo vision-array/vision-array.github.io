@@ -113,9 +113,9 @@ This posts address the premise of attention starting from sequence to sequence R
 ![Transformer Block](/assets/img/08-05-attention-transformers/transformer-block.png)
 
 
-<!-- ### From the UVA Tutorial 
+### From the UVA Tutorial 
  - Proper definitions for Tokens, Sequence Length, Dimensionality of the input (Embedded Dimension) => Sequence Length ! = Embdedded Dimension
- - Head Dimensions for each Q, K , V is (Embdedded Dimension//num_heads) = 512/8 = 64  -->
+ - Head Dimensions for each Q, K , V is (Embdedded Dimension//num_heads) = 512/8 = 64 
 
 
 
