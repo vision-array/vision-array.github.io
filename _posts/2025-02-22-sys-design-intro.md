@@ -2,7 +2,7 @@
 title: System Design Basics
 date: 2025-02-22 7:00:00 -500
 categories: [system design]
-tags: [system design, databases, data centers, cache,s erver, networking]
+tags: [system design, databases, data centers, cache, server, networking]
 ---
 
 # system design basics in a hurry

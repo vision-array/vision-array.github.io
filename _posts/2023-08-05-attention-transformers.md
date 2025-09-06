@@ -1,7 +1,7 @@
 ---
 title: Attention & Transformers
 date: 2023-12-20 6:00:00 -500
-categories: [attention, transformers, AI, Deep Learning]
+categories: [attention, transformers, AI, deep learning]
 tags: [attention, ML, AI, deep learning]
 math: true
 ---
@@ -27,9 +27,9 @@ This posts address the premise of attention starting from sequence to sequence R
 
 - Attention Mechanism allows to learn a context vector for each hidden vector instance of the decoder in such a way that the context vector is calculated as follows
   - Alignment scores are calculated for the current decoder hidden vector instance by applying a learnable small MLP network between the previous decoder hidden vector and the concurrent encoder hidden vector
-    - $$ e_{ti} = f_{att}(s_{t-1}, h_i) $$ where "i" is for encoder hidden vector and "t" is for the decoder hidden vector
+    - we have $$ e_{ti} = f_{att}(s_{t-1}, h_i) $$ where "i" is for encoder hidden vector and "t" is for the decoder hidden vector
  - softmax is applied over the attention scores to turn them into probabilities - easier for gradient based optimization and avoiding any singularities  - $$ a_{ti} = Softmax(e_{ti}) $$ 
- - The decoder hidden vector at each time step can then be formulated in the following way : $$ S_t = Gu(S_{t-1}, y_{t-1}, ct) $$ where - $$ c_t = Sigma_i(a_{ti}, h_i) $$
+ - The decoder hidden vector at each time step can then be formulated in the following way : $$ S_t = Gu(S_{t-1}, y_{t-1}, ct) $$ where $$ c_t = Sigma_i(a_{ti}, h_i) $$
     - Implying that the current context vector for the decoder sequence takes in the combined "weighted" summation of the hidden vectors with (the "weights" being the attention weights)
 ![Context Vector for each instance of Output Vector](/assets/img/08-05-attention-transformers/context-vector.png)
  - So, this methodology helps focus on different parts of the input sequence/encoder hidden vector for each step of the output/decoder hidden vector through the context vector
