@@ -97,20 +97,57 @@ The first step in troubleshooting this is to ensure if you have the right nvidia
 
 Next, remove all the currently installed nvidia drivers and cuda binaries from the system using the following command 
 
+## Update Edit: Troubleshooting with multiple kernels and dkms
+while troubleshooting, one might also benefit with checking the dynamic kernel module support(dkms) for the supported NVidia drivers for the specific host's kernel
+
+```bash
+dkms status
+```
+Ideally, there would be a single dkms for the kernel version that is on the host as the following
+
+![single-nvidia-dkms](/assets/img/07-09-cuda-installation/single-nvidia-dkms.png)
+
+since dkms is specifically designed to support multiple dkms modules and multiple kernel versions, there could be cases like these ones
+
+![multiple-nvidia-dkms](/assets/img/07-09-cuda-installation/multiple-nvidia-dkms.png)
+
+so, one way to handle this is to delete the dkms modules for the kernel versions not in use or wouldn't be used
+
+```bash
+sudo dkms remove -m nvidia -v <version>
+```
+or to remove the dkms modules for all the kernels for that specific NVidia driver version
+
+```bash
+sudo dkms remove -m nvidia -v <version> --all
+```
+
+## Manual NVIDIA Driver Installation
+and then one can look into purging all the existing nvidia drivers(.ko), cuda binaries(.so), removing them from disk and cleaning them from the cache
+
 ```bash
 sudo apt-get remove --purge "*nvidia*"
 sudo apt-get remove --purge "*cuda*"
 sudo apt-get autoremove 
 sudo apt-get autoclean 
 ```
-
 And, it has been observed as a best practice to update to the latest ubuntu kernel headers or reinstall the exisitng latest version so not to miss any patches for these issues. 
 
 ```bash
 sudo apt install --reinstall linux-headers-$(uname -r)
 ```
+installing dkms back (if one had to delete them)
 
-Now, as mentioned above about installing a newer version of the nvidia drivers, we can search for the latest driver versions available through the `apt` package manager using 
+```bash
+sudo apt install nvidia-dkms-<version>
+```
+and verifying if the kernel module is installed correctly
+
+```bash
+sudo apt-cache policy linux-modules-nvidia-<version>-$(uname -r)
+```
+
+Now after a quick reboot,we can search for the latest driver versions available through the `apt` package manager using 
 
 ```bash 
 apt search nvidia-driver
@@ -130,6 +167,14 @@ Once the driver is installed, we can check if it was installed using the command
 ```bash 
 nvidia-smi
 ```
+
+or one can also rely on the `software and updates` GUI installer if they need abstraction from all these above steps and just want to install an nvidia driver that works, but following the above steps to delete and clean both the disk and cache would still help
+
+![software-n-updates-logo](/assets/img/07-09-cuda-installation/software-n-updates-logo.png)
+
+![software-updates-driver](/assets/img/07-09-cuda-installation/software-updates-driver.png)
+
+## Manual CUDA Installation with the runfile
 
 Now that we have installed the NVidia Driver, let's install the cuda runtime through the runfile. Installing it this way provides us an option to only install the cuda shared object binary and not the NVIDIA driver again that is associated with the Toolkit.
 Again, visit the [`Archive of Previous CUDA Releases`](https://developer.nvidia.com/cuda-toolkit-archive) and select the version of cuda toolkit/runtime you want to install. Select all the options related to the Architecture, Distribution and version as applicable and for the installer type select the option `runtime(local)`
@@ -160,7 +205,10 @@ which should result in something as follows:
 
 ![nvcc command image](/assets/img/07-09-cuda-installation/07-09-cuda-installation-11-8-nvcc.png)
 
-Reference: [`All about the NVIDIA Driver Installation`](https://actruce.com/en/all-about-the-nvidia-driver-installation/)
+# Other Important Links
+- [Ubuntu OEM MetaPackages by Makers](https://people.canonical.com/~oem-enablement/oem-meta-packages/)
+- [Official Ubuntu Documentation for installing NVidia Drivers](https://documentation.ubuntu.com/server/how-to/graphics/install-nvidia-drivers/)
+- [All about the NVidia Driver Installation](hhttps://documentation.ubuntu.com/server/how-to/graphics/install-nvidia-drivers/ttps://actruce.com/en/all-about-the-nvidia-driver-installation/)
 
 
 
