@@ -117,9 +117,156 @@ This posts address the premise of attention starting from sequence to sequence R
  - Proper definitions for Tokens, Sequence Length, Dimensionality of the input (Embedded Dimension) => Sequence Length ! = Embdedded Dimension
  - Head Dimensions for each Q, K , V is (Embdedded Dimension//num_heads) = 512/8 = 64 
 
+## Update Edit - Implementations in Torch 
+
+### Single Head Self Attention Layer
+
+```Py
+ class SelfAttentionLayer(nn.Module):
+    
+    def __init__(self, embedding_dim, attention_dim):
+        super().__init__()
+        torch.manual_seed(0)
+        # embedding_dim = attention_dim in single head self attention layer
+        # embedding dim = dimension of the embedding vector of each token
+        self.Q_w = nn.Linear(embedding_dim, attention_dim)
+        self.K_w = nn.Linear(embedding_dim, attention_dim)
+        self.V_w = nn.Linear(embedding_dim, attention_dim)
+        self.attention_dim = attention_dim
+
+    def forward(self, input_embedding):
+        # input_embedding dimensions = Batch size, Seq_Length, Embedding Dimension
+        Q = self.Q_w(input_embedding) # Batch Size, Seq Length, attention_dim
+        K = self.K_w(input_embedding) # Batch Size, Seq Length, attention_dim
+        V = self.V_w(input_embedding) # Batch Size, Seq Length, attention_dim
+    
+        # alignment scores 
+        # torch.transpose(K, 1, 2) dimensions: Batch Size, attn_dim, Seq Length
+        scores = Q @ torch.transpose(K, 1, 2) # @ == torch.matmul
+        # scores dimensions: Batch Size, Seq Length, Seq Length
+        # scaled scores
+        # context_length / sequence_length = number of tokens in a sequence
+        # attention_dim = K.shape[2] or Q.shape[2]
+        seq_length = K.shape[1]
+        scores = scores/(attention_dim**0.5)
+        # form a lower triangular matrix with ones
+        lower_tri_mat = torch.tril(torch.ones(seq_length, seq_length))
+        # vanilla self attention (each token attends to all other tokens)
+        # masked self attention (has causal property  - autogressive - attends to previous upto
+        # current token) : masking future tokens
+        mask = lower_tri_mat == 0 # selects all the elements = 0 in the matrix 
+        scores = scores.masked_fill(mask, float('-inf')) # fills all those mask entries with -inf
+        # now calculate the softmax along j (i.e) along the tokens being attended to
+        # like k11, k12, k13...... hence dimension = 2
+        scores = nn.functional.softmax(scores, dim = 2) # Batch Size, Seq Length. Seq Length
+        # finally another mat mul 
+        attn = scores @ V # Batch Size, Seq Length, attention dim
+        return attn
+```
+
+### Multi-Head Attention Layer
+
+```Py
+import torch
+import torch.nn as nn
+from torchtyping import TensorType
+
+class SingleHeadAttention(nn.Module):
+
+    def __init__(self, embed_dim: int, attn_dim: int):
+        super().__init__()
+        # the attn_dim is head_attn_dim
+        self.Q_w = nn.Linear(embed_dim, attn_dim, bias= False) # Q_w dimensions: embed_dim, head_attn_dim
+        self.K_w = nn.Linear(embed_dim, attn_dim, bias= False) # K_w dimensions: embed_dim, head_attn_dim
+        self.V_w = nn.Linear(embed_dim, attn_dim, bias= False) # V_w dimensions: embed_dim, head_attn_dim
+
+    def forward(self, embedding: TensorType[float]) -> TensorType[float]:
+        # Embedding dim: Batch size, Seq length, embed_dim
+        # so matmul(Batch size, Seq Length, embed_dim @ embed_dim, head_attn_dim) = Batch Size, Seq Length, head_attn_dim
+        Q = self.Q_w(embedding) # Q dimensions: Batch Size, Seq length, head_attn_dim
+        K = self.K_w(embedding) # K dimensions: Batch Size, Seq length, head_attn_dim
+        V = self.V_w(embedding) # V dimensions: Batch Size, Seq length, head_attn_dim
+
+        # the rest follows the same as SingleHeadAttention above untill the attn
+        scores = Q @ torch.transpose(K, 1, 2) 
+        seq_length, attn_dim = K.shape[1], K.shape[2]
+        scores = scores / (attn_dim**0.5)
+
+        lower_tri_mat = torch.tril(torch.ones(seq_length, seq_length))
+        mask = lower_tri_mat == 0
+        scores = scores.masked_fill(mask, float('-inf'))
+        nomralized_scores = torch.nn.softmax(scores, dim = 2)
+        attn = scores @ V # Batch size, Seq length, head_attn_dim
+        return attn 
 
 
-### Reference: 
+class MultiHeadAttention(nn.Module):
+
+    def __init__(self, embed_dim: int, attn_dim: int, num_heads: int):
+        super().__init__()
+        # in the multi-head attention, the attention_dim for each head becomes 
+        # head_attn_dim = attn_dim // num_heads i.e the number of tokens attending to decreases
+        # so that this can be made parallelizable and concatenated after
+        self.head_attn_dim = attn_dim // num_heads 
+        self.mha = nn.ModuleList([SingleHeadAttention(embed_dim, self.head_attn_dim) \
+            for i in range(num_heads)])
+    
+    def forward(self, embedding: TensorType[float]) -> TensorType[float]:
+        mha_output = []
+        for sha in mha:
+            sha_output = sha(embedding) 
+            mha_output.append(sha_output)
+
+        # concatenate outputs along the dimension of attention dimension (i.e final attn_dim = num_heads*head_attn_dim)
+        mha_output = torch.cat(mha_output, dim = 2) # Batch Size, Seq Length, attn_dim (and this mostly could be attn_dim = embed_dim)
+        return mha_output
+```
+
+> Note: Order of weights for initialization is important after a seed is set for the RNG(random number generator) of torch, like order of QKV vs KQV as the weights are assigned sequentially from the generator
+```Py
+    import torch
+
+    embed_dim = 4
+    attn_dim = 3
+
+    torch.manual_seed(0)
+    a = torch.randn(embed_dim, attn_dim)
+    b = torch.randn(embed_dim, attn_dim)
+
+    print(a)
+    print(b)
+
+  # Output: 
+  #  tensor([[ 1.5410, -0.2934, -2.1788],
+  #      [ 0.5684, -1.0845, -1.3986],
+  #      [ 0.4033,  0.8380, -0.7193],
+  #      [-0.4033, -0.5966,  0.1820]])
+  #  tensor([[-0.8567,  1.1006, -1.0712],
+  #      [ 0.1227, -0.5663,  0.3731],
+  #      [-0.8920, -1.5091,  0.3704],
+  #      [ 1.4565,  0.9398,  0.7748]])
+
+    torch.manual_seed(0)
+    b = torch.randn(embed_dim, attn_dim)
+    a = torch.randn(embed_dim, attn_dim)
+    print(a)
+    print(b)
+
+  # Output:
+  #  tensor([[-0.8567,  1.1006, -1.0712],
+  #          [ 0.1227, -0.5663,  0.3731],
+  #          [-0.8920, -1.5091,  0.3704],
+  #          [ 1.4565,  0.9398,  0.7748]])
+  #  tensor([[ 1.5410, -0.2934, -2.1788],
+  #          [ 0.5684, -1.0845, -1.3986],
+  #          [ 0.4033,  0.8380, -0.7193],
+  #          [-0.4033, -0.5966,  0.1820]])
+
+```
+
+
+## References: 
 
 1. [DL4CV (Michigan Online) - Lecture 13 - Attention](https://www.youtube.com/watch?v=YAgjfMR9R_M&list=PL5-TkQAfAZFbzxjBHtzdVCWE0Zbhomg7r&index=13)
 2. [DL4CV (Michigan Online) - Lecture Slides - Attention](https://web.eecs.umich.edu/~justincj/slides/eecs498/498_FA2019_lecture13.pdf) 
+3. [UvA DL Tutorial Notebooks](https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/tutorial6/Transformers_and_MHAttention.html)
